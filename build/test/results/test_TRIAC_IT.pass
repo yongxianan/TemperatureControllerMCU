@@ -1,0 +1,25 @@
+---
+:source:
+  :path: test
+  :file: test_TRIAC_IT.c
+:successes:
+- :test: test_ChangeDataAtSecondCycle
+  :line: 13
+  :message: ''
+- :test: test_ExpectedNoChangeInFirstCycleUpdateWhenReachSecondCycle
+  :line: 59
+  :message: ''
+- :test: test_FlagNotSetInSecondCycle
+  :line: 106
+  :message: ''
+- :test: test_NoFlagInFirstCycleExpectedNoChange
+  :line: 151
+  :message: ''
+:failures: []
+:ignores: []
+:counts:
+  :total: 4
+  :passed: 4
+  :failed: 0
+  :ignored: 0
+:stdout: []

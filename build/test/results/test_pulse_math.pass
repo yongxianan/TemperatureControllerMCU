@@ -1,0 +1,26 @@
+---
+:source:
+  :path: test
+  :file: test_pulse_math.c
+:successes:
+- :test: test_ConfigWithFlagZero
+  :line: 17
+  :message: ''
+- :test: test_ConfigWithFlagOne
+  :line: 43
+  :message: ''
+- :test: test_ConfigOver180Degree
+  :line: 69
+  :message: ''
+- :test: test_ConfigWidthOver100Percent
+  :line: 95
+  :message: ''
+:failures: []
+:ignores: []
+:counts:
+  :total: 4
+  :passed: 4
+  :failed: 0
+  :ignored: 0
+:stdout:
+- CCR3Data->Flag == 1, can't config CCR3! (err=0)
