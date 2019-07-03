@@ -72,10 +72,10 @@
   :testfail: ".fail"
   :dependencies: ".d"
 :unity:
-  :vendor_path: C:/programming_for_student/TRIAC_firing_IT/vendor/ceedling/vendor
+  :vendor_path: C:/programming_for_student/TemperatureControllerMCU/vendor/ceedling/vendor
   :defines: []
 :cmock:
-  :vendor_path: C:/programming_for_student/TRIAC_firing_IT/vendor/ceedling/vendor
+  :vendor_path: C:/programming_for_student/TemperatureControllerMCU/vendor/ceedling/vendor
   :defines: []
   :includes: []
   :mock_prefix: mock_
@@ -95,7 +95,7 @@
   :verbosity: 3
   :unity_helper: false
 :cexception:
-  :vendor_path: C:/programming_for_student/TRIAC_firing_IT/vendor/ceedling/vendor
+  :vendor_path: C:/programming_for_student/TemperatureControllerMCU/vendor/ceedling/vendor
   :defines: []
 :test_runner:
   :includes: []

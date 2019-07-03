@@ -117,3 +117,29 @@ void test_ConfigWidthOver100Percent(void)
   }
   freeException(ex);
 }
+
+void test_ConfigWidthZeroPercent(void)
+{
+  CEXCEPTION_T ex = NULL;
+  Try{
+    CCRxData *CCR3Data = (CCRxData*)malloc(sizeof(CCRxData));
+    CCR3Data->FirstCCR = 11000;
+    CCR3Data->SecondCCR = 13500;
+    CCR3Data->ThirdCCR = 31000;
+    CCR3Data->FourthCCR = 33500;
+    CCR3Data->Flag = 0;
+
+    //CCRxData *CCR3Data = config_pulse(CCRxData *CCR3Data, uint32_t angle, uint32_t width);
+    //width = 0 - 100 %
+    //angle = 0 - 180
+    CCR3Data = config_pulse(CCR3Data,45,0);
+    TEST_ASSERT_EQUAL(5000,CCR3Data->FirstCCR);
+    TEST_ASSERT_EQUAL(5000,CCR3Data->SecondCCR);
+    TEST_ASSERT_EQUAL(25000,CCR3Data->ThirdCCR);
+    TEST_ASSERT_EQUAL(25000,CCR3Data->FourthCCR);
+  }
+  Catch(ex){
+    dumpException(ex);
+  }
+  freeException(ex);
+}
