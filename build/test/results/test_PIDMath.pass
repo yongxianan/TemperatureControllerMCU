@@ -1,0 +1,28 @@
+---
+:source:
+  :path: test
+  :file: test_PIDMath.c
+:successes:
+- :test: test_FindErrorsValues
+  :line: 13
+  :message: ''
+- :test: test_FindPIDValue
+  :line: 24
+  :message: ''
+- :test: test_FindPIDValueWithPIDIntegrate
+  :line: 38
+  :message: ''
+- :test: test_FindPIDValueWithPIDIntegrateAndAvoidPIDValueOver90
+  :line: 61
+  :message: ''
+- :test: test_FindPIDValueWithPIDInReset
+  :line: 85
+  :message: ''
+:failures: []
+:ignores: []
+:counts:
+  :total: 5
+  :passed: 5
+  :failed: 0
+  :ignored: 0
+:stdout: []
