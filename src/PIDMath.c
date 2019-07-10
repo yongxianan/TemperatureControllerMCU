@@ -1,29 +1,28 @@
 #include "PIDMath.h"
 
-
-void FindErrorsValues(PIDErr *PIDErrors, float SetTemp, float ActualTemp){
-  PIDErrors->Previous = PIDErrors->Present;
-  PIDErrors->Present = SetTemp-ActualTemp;
-}
-
-
-int FindPIDValue(PIDConst *PID,PIDErr *PIDErrors,float ElapsedTime,int *PIDIn){
-  int PIDProprotional = 0;
-  int PIDDerivative = 0;
-  int PIDValue = 0;
+int findPIDValue(PidInfo *pidInfo, double actualTemp, uint32_t currentTime){
+  int pidProprotional = 0;
+  int pidDerivative = 0;
+  int pidValue = 0;
+  double currentError = (pidInfo->setValue)-actualTemp;
+  uint32_t  elapsedTime = currentTime-(pidInfo->prevTime);
   //integral constant will only affect errors below 30ºC
-  if(PIDErrors->Present>30){
-    *PIDIn = 0;
+  if(currentError>30){
+    (pidInfo->errorAcc)=0;
   }
-  PIDProprotional = (PIDErrors->Present)*(PID->Kp);
-  *PIDIn = ((PID->Ki)*(PIDErrors->Present))+(*PIDIn);
-  PIDDerivative = ((PIDErrors->Present)-(PIDErrors->Previous))*(PID->Kd)/ElapsedTime;
-  PIDValue = (*PIDIn)+PIDProprotional+PIDDerivative;
-  if(PIDValue<-90){
-    PIDValue=0;
+
+  pidProprotional = (currentError)*(pidInfo->kp);
+  (pidInfo->errorAcc) = ((pidInfo->ki)*currentError)+(pidInfo->errorAcc);
+  pidDerivative = (currentError-(pidInfo->prevError))*(pidInfo->kd)/elapsedTime;
+
+  pidValue = (pidInfo->errorAcc)+pidProprotional+pidDerivative;
+  if(pidValue<-90){
+    pidValue=-90;
   }
-  if(PIDValue>90){
-    PIDValue=90;
+  if(pidValue>90){
+    pidValue=90;
   }
-  return PIDValue;
+  (pidInfo->prevTime) = currentTime;
+  (pidInfo->prevError) = currentError;
+  return pidValue;
 }

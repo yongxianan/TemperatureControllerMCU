@@ -2,20 +2,32 @@
 #define _PIDMATH_H
 
 
-#include <malloc.h>
+#include <stdint.h>
 
 typedef struct{
-  float Present;
-  float Previous;
+  double Present;
+  double Previous;
 }PIDErr;
 
 typedef struct{
-  float Kp;
-  float Ki;
-  float Kd;
+  double Kp;
+  double Ki;
+  double Kd;
 }PIDConst;
 
-void FindErrorsValues(PIDErr *PIDErrors, float SetTemp, float ActualTemp);
-int FindPIDValue(PIDConst *PID,PIDErr *PIDErrors,float ElapsedTime,int *PIDIn);
+
+typedef struct{
+  double setValue;
+  double kp;
+  double ki;
+  double kd;
+  double errorAcc;
+  double prevError;
+  uint32_t  firingAngle;
+  uint32_t  prevTime;
+}PidInfo;
+
+
+int findPIDValue(PidInfo *pidInfo, double actualTemp, uint32_t currentTime);
 
 #endif // _PIDMATH_H

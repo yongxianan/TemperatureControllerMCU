@@ -79,10 +79,10 @@ void resetTest(void)
 int main(void)
 {
   UnityBegin("test_TRIAC_IT.c");
-  RUN_TEST(test_ChangeDataAtSecondCycle, 13);
-  RUN_TEST(test_ExpectedNoChangeInFirstCycleUpdateWhenReachSecondCycle, 59);
-  RUN_TEST(test_FlagNotSetInSecondCycle, 106);
-  RUN_TEST(test_NoFlagInFirstCycleExpectedNoChange, 151);
+  RUN_TEST(test_ChangeDataAtSecondCycle, 12);
+  RUN_TEST(test_ExpectedNoChangeInFirstCycleUpdateWhenReachSecondCycle, 64);
+  RUN_TEST(test_FlagNotSetInSecondCycle, 111);
+  RUN_TEST(test_NoFlagInFirstCycleExpectedNoChange, 156);
 
   CMock_Guts_MemFreeFinal();
   return (UnityEnd());

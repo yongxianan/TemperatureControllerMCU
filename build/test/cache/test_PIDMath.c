@@ -17,67 +17,61 @@ void tearDown(void)
 
 }
 
-
-
-
-
-void test_FindErrorsValues(void)
-
-{
-
-    PIDErr *PIDErrors = (PIDErr *)malloc(sizeof(PIDErr));
-
-    FindErrorsValues(PIDErrors, 80, -50);
-
-    FindErrorsValues(PIDErrors, 80, 70);
-
-    FindErrorsValues(PIDErrors, 80, 90);
-
-    UnityAssertEqualNumber((UNITY_INT)((10)), (UNITY_INT)((PIDErrors->Previous)), (
-
-   ((void *)0)
-
-   ), (UNITY_UINT)(19), UNITY_DISPLAY_STYLE_INT);
-
-    UnityAssertEqualNumber((UNITY_INT)((-10)), (UNITY_INT)((PIDErrors->Present)), (
-
-   ((void *)0)
-
-   ), (UNITY_UINT)(20), UNITY_DISPLAY_STYLE_INT);
-
-}
-
-
-
-
-
 void test_FindPIDValue(void){
 
-  PIDConst *PID = (PIDConst *)malloc(sizeof(PIDConst));
+  PidInfo pidInfo;
 
-  PID->Kp = 3;
+  pidInfo.kp = 3;
 
-  PID->Ki = 2;
+  pidInfo.ki = 2;
 
-  PID->Kd = 1;
+  pidInfo.kd = 1;
 
-  PIDErr *PIDErrors = (PIDErr *)malloc(sizeof(PIDErr));
+  pidInfo.prevError = 20;
 
-  PIDErrors->Previous = 20;
+  pidInfo.setValue = 80;
 
-  PIDErrors->Present = 10;
+  pidInfo.errorAcc = 0;
 
-  int *PIDIn = (int *)malloc(sizeof(int));
+  pidInfo.prevTime = 1;
 
-  *PIDIn = 0;
-
-  int PIDValue = FindPIDValue(PID,PIDErrors,1,PIDIn);
+  int PIDValue = findPIDValue(&pidInfo,70,2);
 
   UnityAssertEqualNumber((UNITY_INT)((40)), (UNITY_INT)((PIDValue)), (
 
  ((void *)0)
 
- ), (UNITY_UINT)(35), UNITY_DISPLAY_STYLE_INT);
+ ), (UNITY_UINT)(36), UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_FindPIDValueNegativeCurrentError(void){
+
+  PidInfo pidInfo;
+
+  pidInfo.kp = 3;
+
+  pidInfo.ki = 2;
+
+  pidInfo.kd = 1;
+
+  pidInfo.prevError = 20;
+
+  pidInfo.setValue = 80;
+
+  pidInfo.errorAcc = 0;
+
+  pidInfo.prevTime = 1;
+
+  int PIDValue = findPIDValue(&pidInfo,90,2);
+
+  UnityAssertEqualNumber((UNITY_INT)((-80)), (UNITY_INT)((PIDValue)), (
+
+ ((void *)0)
+
+ ), (UNITY_UINT)(49), UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -91,45 +85,39 @@ void test_FindPIDValueWithPIDIntegrate(void){
 
 
 
-  PIDConst *PID = (PIDConst *)malloc(sizeof(PIDConst));
+  PidInfo pidInfo;
 
-  PID->Kp = 3;
+  pidInfo.kp = 3;
 
-  PID->Ki = 2;
+  pidInfo.ki = 2;
 
-  PID->Kd = 1;
+  pidInfo.kd = 1;
 
-  PIDErr *PIDErrors = (PIDErr *)malloc(sizeof(PIDErr));
+  pidInfo.prevError = 20;
 
-  PIDErrors->Previous = 20;
+  pidInfo.setValue = 80;
 
-  PIDErrors->Present = 10;
+  pidInfo.errorAcc = 0;
 
-  int *PIDIn = (int *)malloc(sizeof(int));
+  pidInfo.prevTime = 1;
 
-  *PIDIn = 0;
-
-  int PIDValue = FindPIDValue(PID,PIDErrors,1,PIDIn);
+  int PIDValue = findPIDValue(&pidInfo,70,2);
 
   UnityAssertEqualNumber((UNITY_INT)((40)), (UNITY_INT)((PIDValue)), (
 
  ((void *)0)
 
- ), (UNITY_UINT)(52), UNITY_DISPLAY_STYLE_INT);
+ ), (UNITY_UINT)(65), UNITY_DISPLAY_STYLE_INT);
 
 
 
-  PIDErrors->Previous = 10;
-
-  PIDErrors->Present = 10;
-
-  PIDValue = FindPIDValue(PID,PIDErrors,1,PIDIn);
+  PIDValue = findPIDValue(&pidInfo,70,3);
 
   UnityAssertEqualNumber((UNITY_INT)((70)), (UNITY_INT)((PIDValue)), (
 
  ((void *)0)
 
- ), (UNITY_UINT)(57), UNITY_DISPLAY_STYLE_INT);
+ ), (UNITY_UINT)(68), UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -139,59 +127,49 @@ void test_FindPIDValueWithPIDIntegrate(void){
 
 void test_FindPIDValueWithPIDIntegrateAndAvoidPIDValueOver90(void){
 
-  PIDConst *PID = (PIDConst *)malloc(sizeof(PIDConst));
+  PidInfo pidInfo;
 
-  PID->Kp = 3;
+  pidInfo.kp = 3;
 
-  PID->Ki = 2;
+  pidInfo.ki = 2;
 
-  PID->Kd = 1;
+  pidInfo.kd = 1;
 
-  PIDErr *PIDErrors = (PIDErr *)malloc(sizeof(PIDErr));
+  pidInfo.prevError = 20;
 
-  PIDErrors->Previous = 20;
+  pidInfo.setValue = 80;
 
-  PIDErrors->Present = 10;
+  pidInfo.errorAcc = 0;
 
-  int *PIDIn = (int *)malloc(sizeof(int));
+  pidInfo.prevTime = 1;
 
-  *PIDIn = 0;
-
-  int PIDValue = FindPIDValue(PID,PIDErrors,1,PIDIn);
+  int PIDValue = findPIDValue(&pidInfo,70,2);
 
   UnityAssertEqualNumber((UNITY_INT)((40)), (UNITY_INT)((PIDValue)), (
 
  ((void *)0)
 
- ), (UNITY_UINT)(72), UNITY_DISPLAY_STYLE_INT);
+ ), (UNITY_UINT)(82), UNITY_DISPLAY_STYLE_INT);
 
 
 
-  PIDErrors->Previous = 10;
-
-  PIDErrors->Present = 10;
-
-  PIDValue = FindPIDValue(PID,PIDErrors,1,PIDIn);
+  PIDValue = findPIDValue(&pidInfo,70,3);
 
   UnityAssertEqualNumber((UNITY_INT)((70)), (UNITY_INT)((PIDValue)), (
 
  ((void *)0)
 
- ), (UNITY_UINT)(77), UNITY_DISPLAY_STYLE_INT);
+ ), (UNITY_UINT)(85), UNITY_DISPLAY_STYLE_INT);
 
 
 
-  PIDErrors->Previous = 10;
-
-  PIDErrors->Present = 30;
-
-  PIDValue = FindPIDValue(PID,PIDErrors,1,PIDIn);
+  PIDValue = findPIDValue(&pidInfo,50,4);
 
   UnityAssertEqualNumber((UNITY_INT)((90)), (UNITY_INT)((PIDValue)), (
 
  ((void *)0)
 
- ), (UNITY_UINT)(82), UNITY_DISPLAY_STYLE_INT);
+ ), (UNITY_UINT)(88), UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -199,44 +177,38 @@ void test_FindPIDValueWithPIDIntegrateAndAvoidPIDValueOver90(void){
 
 void test_FindPIDValueWithPIDInReset(void){
 
-  PIDConst *PID = (PIDConst *)malloc(sizeof(PIDConst));
+  PidInfo pidInfo;
 
-  PID->Kp = 1;
+  pidInfo.kp = 1;
 
-  PID->Ki = 1;
+  pidInfo.ki = 1;
 
-  PID->Kd = 1;
+  pidInfo.kd = 1;
 
-  PIDErr *PIDErrors = (PIDErr *)malloc(sizeof(PIDErr));
+  pidInfo.prevError = 5;
 
-  PIDErrors->Previous = 5;
+  pidInfo.setValue = 80;
 
-  PIDErrors->Present = 5;
+  pidInfo.errorAcc = 0;
 
-  int *PIDIn = (int *)malloc(sizeof(int));
+  pidInfo.prevTime = 1;
 
-  *PIDIn = 0;
-
-  int PIDValue = FindPIDValue(PID,PIDErrors,1,PIDIn);
+  int PIDValue = findPIDValue(&pidInfo,75,2);
 
   UnityAssertEqualNumber((UNITY_INT)((10)), (UNITY_INT)((PIDValue)), (
 
  ((void *)0)
 
- ), (UNITY_UINT)(96), UNITY_DISPLAY_STYLE_INT);
+ ), (UNITY_UINT)(101), UNITY_DISPLAY_STYLE_INT);
 
 
 
-  PIDErrors->Previous = 5;
-
-  PIDErrors->Present = 31;
-
-  PIDValue = FindPIDValue(PID,PIDErrors,1,PIDIn);
+  PIDValue = findPIDValue(&pidInfo,49,3);
 
   UnityAssertEqualNumber((UNITY_INT)((88)), (UNITY_INT)((PIDValue)), (
 
  ((void *)0)
 
- ), (UNITY_UINT)(101), UNITY_DISPLAY_STYLE_INT);
+ ), (UNITY_UINT)(104), UNITY_DISPLAY_STYLE_INT);
 
 }

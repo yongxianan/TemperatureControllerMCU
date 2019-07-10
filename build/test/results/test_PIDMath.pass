@@ -3,20 +3,20 @@
   :path: test
   :file: test_PIDMath.c
 :successes:
-- :test: test_FindErrorsValues
-  :line: 13
-  :message: ''
 - :test: test_FindPIDValue
-  :line: 24
+  :line: 26
+  :message: ''
+- :test: test_FindPIDValueNegativeCurrentError
+  :line: 39
   :message: ''
 - :test: test_FindPIDValueWithPIDIntegrate
-  :line: 38
+  :line: 52
   :message: ''
 - :test: test_FindPIDValueWithPIDIntegrateAndAvoidPIDValueOver90
-  :line: 61
+  :line: 72
   :message: ''
 - :test: test_FindPIDValueWithPIDInReset
-  :line: 85
+  :line: 91
   :message: ''
 :failures: []
 :ignores: []

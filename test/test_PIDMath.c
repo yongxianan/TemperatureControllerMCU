@@ -9,94 +9,97 @@ void tearDown(void)
 {
 }
 
-//FindErrorsValues(PIDErr *PIDErrors, int SetTemp, int ActualTemp)
-void test_FindErrorsValues(void)
-{
-    PIDErr *PIDErrors = (PIDErr *)malloc(sizeof(PIDErr));
-    FindErrorsValues(PIDErrors, 80, -50);
-    FindErrorsValues(PIDErrors, 80, 70);
-    FindErrorsValues(PIDErrors, 80, 90);
-    TEST_ASSERT_EQUAL(10,PIDErrors->Previous);
-    TEST_ASSERT_EQUAL(-10,PIDErrors->Present);
+/*
+typedef struct{
+  double setValue;
+  double kp;
+  double ki;
+  double kd;
+  double errorAcc;
+  double prevError;
+  uint32_t  firingAngle;
+  uint32_t  prevTime;
+}PidInfo;
+*/
+
+//int findPIDValue(PidInfo *pidInfo, double actualTemp, uint32_t currentTime)
+void test_FindPIDValue(void){
+  PidInfo pidInfo;
+  pidInfo.kp = 3;
+  pidInfo.ki = 2;
+  pidInfo.kd = 1;
+  pidInfo.prevError = 20;
+  pidInfo.setValue = 80;
+  pidInfo.errorAcc = 0;
+  pidInfo.prevTime = 1;
+  int PIDValue = findPIDValue(&pidInfo,70,2);
+  TEST_ASSERT_EQUAL(40,PIDValue);
 }
 
-//int FindPIDValue(PIDConst *PID, PIDErr *PIDErrors, float ElapsedTime)
-void test_FindPIDValue(void){
-  PIDConst *PID = (PIDConst *)malloc(sizeof(PIDConst));
-  PID->Kp = 3;
-  PID->Ki = 2;
-  PID->Kd = 1;
-  PIDErr *PIDErrors = (PIDErr *)malloc(sizeof(PIDErr));
-  PIDErrors->Previous = 20;
-  PIDErrors->Present = 10;
-  int *PIDIn = (int *)malloc(sizeof(int));
-  *PIDIn = 0;
-  int PIDValue = FindPIDValue(PID,PIDErrors,1,PIDIn);
-  TEST_ASSERT_EQUAL(40,PIDValue);
+void test_FindPIDValueNegativeCurrentError(void){
+  PidInfo pidInfo;
+  pidInfo.kp = 3;
+  pidInfo.ki = 2;
+  pidInfo.kd = 1;
+  pidInfo.prevError = 20;
+  pidInfo.setValue = 80;
+  pidInfo.errorAcc = 0;
+  pidInfo.prevTime = 1;
+  int PIDValue = findPIDValue(&pidInfo,90,2);
+  TEST_ASSERT_EQUAL(-80,PIDValue);
 }
 
 void test_FindPIDValueWithPIDIntegrate(void){
   //PIDIntegrate have integrate errors that caused by
   //previous called of function
-  //int FindPIDValue(PIDConst *PID,PIDErr *PIDErrors,float ElapsedTime,int *PIDIn)
-  PIDConst *PID = (PIDConst *)malloc(sizeof(PIDConst));
-  PID->Kp = 3;
-  PID->Ki = 2;
-  PID->Kd = 1;
-  PIDErr *PIDErrors = (PIDErr *)malloc(sizeof(PIDErr));
-  PIDErrors->Previous = 20;
-  PIDErrors->Present = 10;
-  int *PIDIn = (int *)malloc(sizeof(int));
-  *PIDIn = 0;
-  int PIDValue = FindPIDValue(PID,PIDErrors,1,PIDIn);
+  //int findPIDValue(PidInfo *pidInfo, double actualTemp, uint32_t currentTime)
+  PidInfo pidInfo;
+  pidInfo.kp = 3;
+  pidInfo.ki = 2;
+  pidInfo.kd = 1;
+  pidInfo.prevError = 20;
+  pidInfo.setValue = 80;
+  pidInfo.errorAcc = 0;
+  pidInfo.prevTime = 1;
+  int PIDValue = findPIDValue(&pidInfo,70,2);
   TEST_ASSERT_EQUAL(40,PIDValue);
 
-  PIDErrors->Previous = 10;
-  PIDErrors->Present = 10;
-  PIDValue = FindPIDValue(PID,PIDErrors,1,PIDIn);
+  PIDValue = findPIDValue(&pidInfo,70,3);
   TEST_ASSERT_EQUAL(70,PIDValue);
 }
 
 
 void test_FindPIDValueWithPIDIntegrateAndAvoidPIDValueOver90(void){
-  PIDConst *PID = (PIDConst *)malloc(sizeof(PIDConst));
-  PID->Kp = 3;
-  PID->Ki = 2;
-  PID->Kd = 1;
-  PIDErr *PIDErrors = (PIDErr *)malloc(sizeof(PIDErr));
-  PIDErrors->Previous = 20;
-  PIDErrors->Present = 10;
-  int *PIDIn = (int *)malloc(sizeof(int));
-  *PIDIn = 0;
-  int PIDValue = FindPIDValue(PID,PIDErrors,1,PIDIn);
+  PidInfo pidInfo;
+  pidInfo.kp = 3;
+  pidInfo.ki = 2;
+  pidInfo.kd = 1;
+  pidInfo.prevError = 20;
+  pidInfo.setValue = 80;
+  pidInfo.errorAcc = 0;
+  pidInfo.prevTime = 1;
+  int PIDValue = findPIDValue(&pidInfo,70,2);
   TEST_ASSERT_EQUAL(40,PIDValue);
 
-  PIDErrors->Previous = 10;
-  PIDErrors->Present = 10;
-  PIDValue = FindPIDValue(PID,PIDErrors,1,PIDIn);
+  PIDValue = findPIDValue(&pidInfo,70,3);
   TEST_ASSERT_EQUAL(70,PIDValue);
 
-  PIDErrors->Previous = 10;
-  PIDErrors->Present = 30;
-  PIDValue = FindPIDValue(PID,PIDErrors,1,PIDIn);
+  PIDValue = findPIDValue(&pidInfo,50,4);
   TEST_ASSERT_EQUAL(90,PIDValue);
 }
 
 void test_FindPIDValueWithPIDInReset(void){
-  PIDConst *PID = (PIDConst *)malloc(sizeof(PIDConst));
-  PID->Kp = 1;
-  PID->Ki = 1;
-  PID->Kd = 1;
-  PIDErr *PIDErrors = (PIDErr *)malloc(sizeof(PIDErr));
-  PIDErrors->Previous = 5;
-  PIDErrors->Present = 5;
-  int *PIDIn = (int *)malloc(sizeof(int));
-  *PIDIn = 0;
-  int PIDValue = FindPIDValue(PID,PIDErrors,1,PIDIn);
+  PidInfo pidInfo;
+  pidInfo.kp = 1;
+  pidInfo.ki = 1;
+  pidInfo.kd = 1;
+  pidInfo.prevError = 5;
+  pidInfo.setValue = 80;
+  pidInfo.errorAcc = 0;
+  pidInfo.prevTime = 1;
+  int PIDValue = findPIDValue(&pidInfo,75,2);
   TEST_ASSERT_EQUAL(10,PIDValue);
 
-  PIDErrors->Previous = 5;
-  PIDErrors->Present = 31;
-  PIDValue = FindPIDValue(PID,PIDErrors,1,PIDIn);
+  PIDValue = findPIDValue(&pidInfo,49,3);
   TEST_ASSERT_EQUAL(88,PIDValue);
 }

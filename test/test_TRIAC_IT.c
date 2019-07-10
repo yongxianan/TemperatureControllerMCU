@@ -1,5 +1,4 @@
 #include "unity.h"
-#include <malloc.h>
 #include "TRIAC_IT.h"
 #include "mock_timer.h"
 void setUp(void)
@@ -15,44 +14,50 @@ void test_ChangeDataAtSecondCycle(void)
   //check flag if the firing angle set
   //there is 2 cycle of sine wave
   //set firing angle twice
-  CCRxData *CCR3Data = (CCRxData*)malloc(sizeof(CCRxData));
-  CCR3Data->FirstCCR = 10000;
-  CCR3Data->SecondCCR = 12500;
-  CCR3Data->ThirdCCR = 30000;
-  CCR3Data->FourthCCR = 32500;
-  CCR3Data->Flag = 1;
+  CCRxData ccr3Data;
+  ccr3Data.firstCCR = 10000;
+  ccr3Data.secondCCR = 12500;
+  ccr3Data.thirdCCR = 30000;
+  ccr3Data.fourthCCR = 32500;
+  ccr3Data.flag = 1;
 
   UpdateCCR3_Expect(10000);
   UpdateCCR3_Expect(12500);
   UpdateCCR3_Expect(30000);
   UpdateCCR3_Expect(32500);
 
-//void TriacTriggerCallback(CCRxData *CCR3Data) is an interrupt
+//void TriacTriggerCallback(CCRxData *ccr3Data) is an interrupt
 //4 interrupt in 1 cycle sine wave
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
+  TriacTriggerCallback(&ccr3Data);
+  TEST_ASSERT_EQUAL(0,ccr3Data.flag);
+  TriacTriggerCallback(&ccr3Data);
+  TEST_ASSERT_EQUAL(0,ccr3Data.flag);
+  TriacTriggerCallback(&ccr3Data);
+  TEST_ASSERT_EQUAL(0,ccr3Data.flag);
+  TriacTriggerCallback(&ccr3Data);
 
-  TEST_ASSERT_EQUAL(0,CCR3Data->Flag);
+  TEST_ASSERT_EQUAL(0,ccr3Data.flag);
 
-  CCR3Data->FirstCCR = 11000;
-  CCR3Data->SecondCCR = 13500;
-  CCR3Data->ThirdCCR = 31000;
-  CCR3Data->FourthCCR = 33500;
-  CCR3Data->Flag = 1;
+  ccr3Data.firstCCR = 11000;
+  ccr3Data.secondCCR = 13500;
+  ccr3Data.thirdCCR = 31000;
+  ccr3Data.fourthCCR = 33500;
+  ccr3Data.flag = 1;
 
   UpdateCCR3_Expect(11000);
   UpdateCCR3_Expect(13500);
   UpdateCCR3_Expect(31000);
   UpdateCCR3_Expect(33500);
 
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
+  TriacTriggerCallback(&ccr3Data);
+  TEST_ASSERT_EQUAL(0,ccr3Data.flag);
+  TriacTriggerCallback(&ccr3Data);
+  TEST_ASSERT_EQUAL(0,ccr3Data.flag);
+  TriacTriggerCallback(&ccr3Data);
+  TEST_ASSERT_EQUAL(0,ccr3Data.flag);
+  TriacTriggerCallback(&ccr3Data);
 
-  TEST_ASSERT_EQUAL(0,CCR3Data->Flag);
+  TEST_ASSERT_EQUAL(0,ccr3Data.flag);
 
 }
 
@@ -60,46 +65,46 @@ void test_ExpectedNoChangeInFirstCycleUpdateWhenReachSecondCycle(void)
 {
   //expect data to change after first sine wave
   //avoid change in first sine wave
-  CCRxData *CCR3Data = (CCRxData*)malloc(sizeof(CCRxData));
+  CCRxData ccr3Data;
   //CCR value for first sine wave
-  CCR3Data->FirstCCR = 10000;
-  CCR3Data->SecondCCR = 12500;
-  CCR3Data->ThirdCCR = 30000;
-  CCR3Data->FourthCCR = 32500;
-  CCR3Data->Flag = 1;
+  ccr3Data.firstCCR = 10000;
+  ccr3Data.secondCCR = 12500;
+  ccr3Data.thirdCCR = 30000;
+  ccr3Data.fourthCCR = 32500;
+  ccr3Data.flag = 1;
 
   UpdateCCR3_Expect(10000);
   UpdateCCR3_Expect(12500);
   UpdateCCR3_Expect(30000);
   UpdateCCR3_Expect(32500);
 
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
+  TriacTriggerCallback(&ccr3Data);
+  TriacTriggerCallback(&ccr3Data);
 
-  TEST_ASSERT_EQUAL(0,CCR3Data->Flag);
+  TEST_ASSERT_EQUAL(0,ccr3Data.flag);
 
   //user set new firing angle (new CCR value) during first sine wave
-  CCR3Data->FirstCCR = 11000;
-  CCR3Data->SecondCCR = 13500;
-  CCR3Data->ThirdCCR = 31000;
-  CCR3Data->FourthCCR = 33500;
-  CCR3Data->Flag = 1;
+  ccr3Data.firstCCR = 11000;
+  ccr3Data.secondCCR = 13500;
+  ccr3Data.thirdCCR = 31000;
+  ccr3Data.fourthCCR = 33500;
+  ccr3Data.flag = 1;
 
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
+  TriacTriggerCallback(&ccr3Data);
+  TriacTriggerCallback(&ccr3Data);
 
-  TEST_ASSERT_EQUAL(1,CCR3Data->Flag);
+  TEST_ASSERT_EQUAL(1,ccr3Data.flag);
 
   UpdateCCR3_Expect(11000);
   UpdateCCR3_Expect(13500);
   UpdateCCR3_Expect(31000);
   UpdateCCR3_Expect(33500);
 
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
-  TEST_ASSERT_EQUAL(0,CCR3Data->Flag);
+  TriacTriggerCallback(&ccr3Data);
+  TriacTriggerCallback(&ccr3Data);
+  TriacTriggerCallback(&ccr3Data);
+  TriacTriggerCallback(&ccr3Data);
+  TEST_ASSERT_EQUAL(0,ccr3Data.flag);
 
 }
 
@@ -109,42 +114,42 @@ void test_FlagNotSetInSecondCycle(void)
   //flag = 1 in first cycle (reset due to interrupt use static),
   //flag = 0 in second cycle expect no CCR value set
   //there is 2 cycle of sine wave
-  CCRxData *CCR3Data = (CCRxData*)malloc(sizeof(CCRxData));
-  CCR3Data->FirstCCR = 0;
-  CCR3Data->SecondCCR = 0;
-  CCR3Data->ThirdCCR = 0;
-  CCR3Data->FourthCCR = 0;
-  CCR3Data->Flag = 1;
+  CCRxData ccr3Data;
+  ccr3Data.firstCCR = 0;
+  ccr3Data.secondCCR = 0;
+  ccr3Data.thirdCCR = 0;
+  ccr3Data.fourthCCR = 0;
+  ccr3Data.flag = 1;
 
   UpdateCCR3_Expect(0);
   UpdateCCR3_Expect(0);
   UpdateCCR3_Expect(0);
   UpdateCCR3_Expect(0);
 
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
+  TriacTriggerCallback(&ccr3Data);
+  TriacTriggerCallback(&ccr3Data);
+  TriacTriggerCallback(&ccr3Data);
+  TriacTriggerCallback(&ccr3Data);
 
-  TEST_ASSERT_EQUAL(0,CCR3Data->Flag);
+  TEST_ASSERT_EQUAL(0,ccr3Data.flag);
 
-  CCR3Data->FirstCCR = 11000;
-  CCR3Data->SecondCCR = 13500;
-  CCR3Data->ThirdCCR = 31000;
-  CCR3Data->FourthCCR = 33500;
-  CCR3Data->Flag = 0;
+  ccr3Data.firstCCR = 11000;
+  ccr3Data.secondCCR = 13500;
+  ccr3Data.thirdCCR = 31000;
+  ccr3Data.fourthCCR = 33500;
+  ccr3Data.flag = 0;
 
   UpdateCCR3_Expect(0);
   UpdateCCR3_Expect(0);
   UpdateCCR3_Expect(0);
   UpdateCCR3_Expect(0);
 
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
+  TriacTriggerCallback(&ccr3Data);
+  TriacTriggerCallback(&ccr3Data);
+  TriacTriggerCallback(&ccr3Data);
+  TriacTriggerCallback(&ccr3Data);
 
-  TEST_ASSERT_EQUAL(0,CCR3Data->Flag);
+  TEST_ASSERT_EQUAL(0,ccr3Data.flag);
 
 }
 
@@ -154,48 +159,48 @@ void test_NoFlagInFirstCycleExpectedNoChange(void)
   //no data change in second due to flag = 0
   //expect data to change after second sine wave
   //avoid change in second sine wave
-  CCRxData *CCR3Data = (CCRxData*)malloc(sizeof(CCRxData));
-  CCR3Data->FirstCCR = 0;
-  CCR3Data->SecondCCR = 0;
-  CCR3Data->ThirdCCR = 0;
-  CCR3Data->FourthCCR = 0;
-  CCR3Data->Flag = 1;
+  CCRxData ccr3Data;
+  ccr3Data.firstCCR = 0;
+  ccr3Data.secondCCR = 0;
+  ccr3Data.thirdCCR = 0;
+  ccr3Data.fourthCCR = 0;
+  ccr3Data.flag = 1;
 
   UpdateCCR3_Expect(0);
   UpdateCCR3_Expect(0);
   UpdateCCR3_Expect(0);
   UpdateCCR3_Expect(0);
 
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
+  TriacTriggerCallback(&ccr3Data);
+  TriacTriggerCallback(&ccr3Data);
+  TriacTriggerCallback(&ccr3Data);
+  TriacTriggerCallback(&ccr3Data);
 
-  CCR3Data->FirstCCR = 10000;
-  CCR3Data->SecondCCR = 12500;
-  CCR3Data->ThirdCCR = 30000;
-  CCR3Data->FourthCCR = 32500;
-  CCR3Data->Flag = 0;
+  ccr3Data.firstCCR = 10000;
+  ccr3Data.secondCCR = 12500;
+  ccr3Data.thirdCCR = 30000;
+  ccr3Data.fourthCCR = 32500;
+  ccr3Data.flag = 0;
 
   UpdateCCR3_Expect(0);
   UpdateCCR3_Expect(0);
   UpdateCCR3_Expect(0);
   UpdateCCR3_Expect(0);
 
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
+  TriacTriggerCallback(&ccr3Data);
+  TriacTriggerCallback(&ccr3Data);
 
-  TEST_ASSERT_EQUAL(0,CCR3Data->Flag);
+  TEST_ASSERT_EQUAL(0,ccr3Data.flag);
 
-  CCR3Data->FirstCCR = 11000;
-  CCR3Data->SecondCCR = 13500;
-  CCR3Data->ThirdCCR = 31000;
-  CCR3Data->FourthCCR = 33500;
-  CCR3Data->Flag = 1;
+  ccr3Data.firstCCR = 11000;
+  ccr3Data.secondCCR = 13500;
+  ccr3Data.thirdCCR = 31000;
+  ccr3Data.fourthCCR = 33500;
+  ccr3Data.flag = 1;
 
-  TriacTriggerCallback(CCR3Data);
-  TriacTriggerCallback(CCR3Data);
+  TriacTriggerCallback(&ccr3Data);
+  TriacTriggerCallback(&ccr3Data);
 
-  TEST_ASSERT_EQUAL(1,CCR3Data->Flag);
+  TEST_ASSERT_EQUAL(1,ccr3Data.flag);
 
 }

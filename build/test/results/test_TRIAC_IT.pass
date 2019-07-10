@@ -4,16 +4,16 @@
   :file: test_TRIAC_IT.c
 :successes:
 - :test: test_ChangeDataAtSecondCycle
-  :line: 13
+  :line: 12
   :message: ''
 - :test: test_ExpectedNoChangeInFirstCycleUpdateWhenReachSecondCycle
-  :line: 59
+  :line: 64
   :message: ''
 - :test: test_FlagNotSetInSecondCycle
-  :line: 106
+  :line: 111
   :message: ''
 - :test: test_NoFlagInFirstCycleExpectedNoChange
-  :line: 151
+  :line: 156
   :message: ''
 :failures: []
 :ignores: []

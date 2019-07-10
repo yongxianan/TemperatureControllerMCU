@@ -2,14 +2,13 @@
 #define _TRIAC_IT_H
 
 #include <stdint.h>
-#include <malloc.h>
 
 typedef struct{
-	uint32_t	FirstCCR;
-	uint32_t	SecondCCR;
-	uint32_t	ThirdCCR;
-	uint32_t	FourthCCR;
-	uint32_t	Flag;
+	uint32_t	firstCCR;
+	uint32_t	secondCCR;
+	uint32_t	thirdCCR;
+	uint32_t	fourthCCR;
+	uint32_t	flag;
 }CCRxData;
 void TriacTriggerCallback(CCRxData *CCR3Data);
 

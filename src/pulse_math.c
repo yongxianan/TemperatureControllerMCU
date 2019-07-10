@@ -1,27 +1,25 @@
 #include "pulse_math.h"
+#include "Error.h"
+#include "Exception.h"
+#include "CException.h"
 
-
-CCRxData *config_pulse(CCRxData *CCR3Data, uint32_t angle, uint32_t width){
+void config_pulse(CCRxData *ccr3Data, uint32_t firingAngle, uint32_t width){
 	//while(flag == 1){};
 
-	if(angle>=180){
-		angle = 180;
+	if(firingAngle>=180){
+		firingAngle = 180;
 	}
-	if(width>=100){
-		width = 100;
+	if((firingAngle+width)>=180){
+		width = 180-firingAngle;
 	}
-	if(CCR3Data->Flag == 1){
+	if(ccr3Data->flag == 1){
 		//return CCR3Data;
-		throwException(0,NULL,"CCR3Data->Flag == 1, can't config CCR3!");
+		throwException(CCR3DATA_FLAG_1,NULL,"ccr3Data->flag == 1, can't config CCR3!");
 	}
-	uint32_t WidthLength = 0;
-	CCR3Data->FirstCCR = angle*20000/180;
-	WidthLength = 20000 - (CCR3Data->FirstCCR);
-	WidthLength = width*WidthLength/100;
-	CCR3Data->ThirdCCR = (CCR3Data->FirstCCR)+20000;
-	CCR3Data->SecondCCR = (CCR3Data->FirstCCR)+WidthLength;
-	CCR3Data->FourthCCR = (CCR3Data->ThirdCCR)+WidthLength;
-	CCR3Data->Flag = 1;
 
-	return CCR3Data;
+	ccr3Data->firstCCR = firingAngle*20000/180;
+	ccr3Data->secondCCR = (width*20000/180)+(ccr3Data->firstCCR);
+	ccr3Data->thirdCCR = (ccr3Data->firstCCR)+20000;
+	ccr3Data->fourthCCR = (ccr3Data->secondCCR)+20000;
+	ccr3Data->flag = 1;
 }

@@ -37,8 +37,8 @@ extern void tearDown(void);
 extern void test_ConfigWithFlagZero(void);
 extern void test_ConfigWithFlagOne(void);
 extern void test_ConfigOver180Degree(void);
-extern void test_ConfigWidthOver100Percent(void);
-extern void test_ConfigWidthZeroPercent(void);
+extern void test_ConfigWidthOver180(void);
+extern void test_ConfigWidthZero(void);
 
 
 /*=======Test Reset Option=====*/
@@ -54,11 +54,11 @@ void resetTest(void)
 int main(void)
 {
   UnityBegin("test_pulse_math.c");
-  RUN_TEST(test_ConfigWithFlagZero, 17);
+  RUN_TEST(test_ConfigWithFlagZero, 16);
   RUN_TEST(test_ConfigWithFlagOne, 43);
-  RUN_TEST(test_ConfigOver180Degree, 69);
-  RUN_TEST(test_ConfigWidthOver100Percent, 95);
-  RUN_TEST(test_ConfigWidthZeroPercent, 121);
+  RUN_TEST(test_ConfigOver180Degree, 70);
+  RUN_TEST(test_ConfigWidthOver180, 98);
+  RUN_TEST(test_ConfigWidthZero, 126);
 
   return (UnityEnd());
 }

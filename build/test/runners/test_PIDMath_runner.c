@@ -34,8 +34,8 @@ char* GlobalOrderError;
 /*=======External Functions This Runner Calls=====*/
 extern void setUp(void);
 extern void tearDown(void);
-extern void test_FindErrorsValues(void);
 extern void test_FindPIDValue(void);
+extern void test_FindPIDValueNegativeCurrentError(void);
 extern void test_FindPIDValueWithPIDIntegrate(void);
 extern void test_FindPIDValueWithPIDIntegrateAndAvoidPIDValueOver90(void);
 extern void test_FindPIDValueWithPIDInReset(void);
@@ -54,11 +54,11 @@ void resetTest(void)
 int main(void)
 {
   UnityBegin("test_PIDMath.c");
-  RUN_TEST(test_FindErrorsValues, 13);
-  RUN_TEST(test_FindPIDValue, 24);
-  RUN_TEST(test_FindPIDValueWithPIDIntegrate, 38);
-  RUN_TEST(test_FindPIDValueWithPIDIntegrateAndAvoidPIDValueOver90, 61);
-  RUN_TEST(test_FindPIDValueWithPIDInReset, 85);
+  RUN_TEST(test_FindPIDValue, 26);
+  RUN_TEST(test_FindPIDValueNegativeCurrentError, 39);
+  RUN_TEST(test_FindPIDValueWithPIDIntegrate, 52);
+  RUN_TEST(test_FindPIDValueWithPIDIntegrateAndAvoidPIDValueOver90, 72);
+  RUN_TEST(test_FindPIDValueWithPIDInReset, 91);
 
   return (UnityEnd());
 }
