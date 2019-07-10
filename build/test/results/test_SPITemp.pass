@@ -1,0 +1,20 @@
+---
+:source:
+  :path: test
+  :file: test_SPITemp.c
+:successes:
+- :test: test_calculateTempFromBinary
+  :line: 15
+  :message: ''
+- :test: test_calculateTempThermocoupleIsOpen
+  :line: 27
+  :message: ''
+:failures: []
+:ignores: []
+:counts:
+  :total: 2
+  :passed: 2
+  :failed: 0
+  :ignored: 0
+:stdout:
+- bit 2 = 1, thermocouple input is open. (err=17)
