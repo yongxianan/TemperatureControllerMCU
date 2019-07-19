@@ -7,7 +7,13 @@
 #include "mock_timer.h"
 
 static const char* CMockString_CCR3 = "CCR3";
+static const char* CMockString_HAL_UART_Receive_IT = "HAL_UART_Receive_IT";
+static const char* CMockString_HAL_UART_Transmit = "HAL_UART_Transmit";
+static const char* CMockString_Size = "Size";
+static const char* CMockString_Timeout = "Timeout";
 static const char* CMockString_UpdateCCR3 = "UpdateCCR3";
+static const char* CMockString_huart = "huart";
+static const char* CMockString_pData = "pData";
 
 typedef struct _CMOCK_UpdateCCR3_CALL_INSTANCE
 {
@@ -18,12 +24,43 @@ typedef struct _CMOCK_UpdateCCR3_CALL_INSTANCE
 
 } CMOCK_UpdateCCR3_CALL_INSTANCE;
 
+typedef struct _CMOCK_HAL_UART_Transmit_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
+  UART_HandleTypeDef* Expected_huart;
+  uint8_t* Expected_pData;
+  uint16_t Expected_Size;
+  uint32_t Expected_Timeout;
+  CEXCEPTION_T ExceptionToThrow;
+
+} CMOCK_HAL_UART_Transmit_CALL_INSTANCE;
+
+typedef struct _CMOCK_HAL_UART_Receive_IT_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  int CallOrder;
+  UART_HandleTypeDef* Expected_huart;
+  uint8_t* Expected_pData;
+  uint16_t Expected_Size;
+  CEXCEPTION_T ExceptionToThrow;
+
+} CMOCK_HAL_UART_Receive_IT_CALL_INSTANCE;
+
 static struct mock_timerInstance
 {
   int UpdateCCR3_IgnoreBool;
   CMOCK_UpdateCCR3_CALLBACK UpdateCCR3_CallbackFunctionPointer;
   int UpdateCCR3_CallbackCalls;
   CMOCK_MEM_INDEX_TYPE UpdateCCR3_CallInstance;
+  int HAL_UART_Transmit_IgnoreBool;
+  CMOCK_HAL_UART_Transmit_CALLBACK HAL_UART_Transmit_CallbackFunctionPointer;
+  int HAL_UART_Transmit_CallbackCalls;
+  CMOCK_MEM_INDEX_TYPE HAL_UART_Transmit_CallInstance;
+  int HAL_UART_Receive_IT_IgnoreBool;
+  CMOCK_HAL_UART_Receive_IT_CALLBACK HAL_UART_Receive_IT_CallbackFunctionPointer;
+  int HAL_UART_Receive_IT_CallbackCalls;
+  CMOCK_MEM_INDEX_TYPE HAL_UART_Receive_IT_CallInstance;
 } Mock;
 
 extern jmp_buf AbortFrame;
@@ -39,6 +76,18 @@ void mock_timer_Verify(void)
   UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.UpdateCCR3_CallInstance, cmock_line, CMockStringCalledLess);
   if (Mock.UpdateCCR3_CallbackFunctionPointer != NULL)
     Mock.UpdateCCR3_CallInstance = CMOCK_GUTS_NONE;
+  if (Mock.HAL_UART_Transmit_IgnoreBool)
+    Mock.HAL_UART_Transmit_CallInstance = CMOCK_GUTS_NONE;
+  UNITY_SET_DETAIL(CMockString_HAL_UART_Transmit);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.HAL_UART_Transmit_CallInstance, cmock_line, CMockStringCalledLess);
+  if (Mock.HAL_UART_Transmit_CallbackFunctionPointer != NULL)
+    Mock.HAL_UART_Transmit_CallInstance = CMOCK_GUTS_NONE;
+  if (Mock.HAL_UART_Receive_IT_IgnoreBool)
+    Mock.HAL_UART_Receive_IT_CallInstance = CMOCK_GUTS_NONE;
+  UNITY_SET_DETAIL(CMockString_HAL_UART_Receive_IT);
+  UNITY_TEST_ASSERT(CMOCK_GUTS_NONE == Mock.HAL_UART_Receive_IT_CallInstance, cmock_line, CMockStringCalledLess);
+  if (Mock.HAL_UART_Receive_IT_CallbackFunctionPointer != NULL)
+    Mock.HAL_UART_Receive_IT_CallInstance = CMOCK_GUTS_NONE;
 }
 
 void mock_timer_Init(void)
@@ -52,6 +101,10 @@ void mock_timer_Destroy(void)
   memset(&Mock, 0, sizeof(Mock));
   Mock.UpdateCCR3_CallbackFunctionPointer = NULL;
   Mock.UpdateCCR3_CallbackCalls = 0;
+  Mock.HAL_UART_Transmit_CallbackFunctionPointer = NULL;
+  Mock.HAL_UART_Transmit_CallbackCalls = 0;
+  Mock.HAL_UART_Receive_IT_CallbackFunctionPointer = NULL;
+  Mock.HAL_UART_Receive_IT_CallbackCalls = 0;
   GlobalExpectCount = 0;
   GlobalVerifyOrder = 0;
 }
@@ -134,6 +187,199 @@ void UpdateCCR3_CMockExpectAndThrow(UNITY_LINE_TYPE cmock_line, uint32_t CCR3, C
   cmock_call_instance->CallOrder = ++GlobalExpectCount;
   cmock_call_instance->ExceptionToThrow = CEXCEPTION_NONE;
   CMockExpectParameters_UpdateCCR3(cmock_call_instance, CCR3);
+  cmock_call_instance->ExceptionToThrow = cmock_to_throw;
+}
+
+void HAL_UART_Transmit(UART_HandleTypeDef* huart, uint8_t* pData, uint16_t Size, uint32_t Timeout)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_HAL_UART_Transmit_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_HAL_UART_Transmit);
+  cmock_call_instance = (CMOCK_HAL_UART_Transmit_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.HAL_UART_Transmit_CallInstance);
+  Mock.HAL_UART_Transmit_CallInstance = CMock_Guts_MemNext(Mock.HAL_UART_Transmit_CallInstance);
+  if (Mock.HAL_UART_Transmit_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
+  if (Mock.HAL_UART_Transmit_CallbackFunctionPointer != NULL)
+  {
+    Mock.HAL_UART_Transmit_CallbackFunctionPointer(huart, pData, Size, Timeout, Mock.HAL_UART_Transmit_CallbackCalls++);
+    return;
+  }
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
+  {
+    UNITY_SET_DETAILS(CMockString_HAL_UART_Transmit,CMockString_huart);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_huart), (void*)(huart), sizeof(UART_HandleTypeDef), cmock_line, CMockStringMismatch);
+  }
+  {
+    UNITY_SET_DETAILS(CMockString_HAL_UART_Transmit,CMockString_pData);
+    if (cmock_call_instance->Expected_pData == NULL)
+      { UNITY_TEST_ASSERT_NULL(pData, cmock_line, CMockStringExpNULL); }
+    else
+      { UNITY_TEST_ASSERT_EQUAL_HEX8_ARRAY(cmock_call_instance->Expected_pData, pData, 1, cmock_line, CMockStringMismatch); }
+  }
+  {
+    UNITY_SET_DETAILS(CMockString_HAL_UART_Transmit,CMockString_Size);
+    UNITY_TEST_ASSERT_EQUAL_HEX16(cmock_call_instance->Expected_Size, Size, cmock_line, CMockStringMismatch);
+  }
+  {
+    UNITY_SET_DETAILS(CMockString_HAL_UART_Transmit,CMockString_Timeout);
+    UNITY_TEST_ASSERT_EQUAL_HEX32(cmock_call_instance->Expected_Timeout, Timeout, cmock_line, CMockStringMismatch);
+  }
+  if (cmock_call_instance->ExceptionToThrow != CEXCEPTION_NONE)
+  {
+    UNITY_CLR_DETAILS();
+    Throw(cmock_call_instance->ExceptionToThrow);
+  }
+  UNITY_CLR_DETAILS();
+}
+
+void CMockExpectParameters_HAL_UART_Transmit(CMOCK_HAL_UART_Transmit_CALL_INSTANCE* cmock_call_instance, UART_HandleTypeDef* huart, uint8_t* pData, uint16_t Size, uint32_t Timeout)
+{
+  cmock_call_instance->Expected_huart = huart;
+  cmock_call_instance->Expected_pData = pData;
+  cmock_call_instance->Expected_Size = Size;
+  cmock_call_instance->Expected_Timeout = Timeout;
+}
+
+void HAL_UART_Transmit_CMockIgnore(void)
+{
+  Mock.HAL_UART_Transmit_IgnoreBool = (int)1;
+}
+
+void HAL_UART_Transmit_CMockExpect(UNITY_LINE_TYPE cmock_line, UART_HandleTypeDef* huart, uint8_t* pData, uint16_t Size, uint32_t Timeout)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_HAL_UART_Transmit_CALL_INSTANCE));
+  CMOCK_HAL_UART_Transmit_CALL_INSTANCE* cmock_call_instance = (CMOCK_HAL_UART_Transmit_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.HAL_UART_Transmit_CallInstance = CMock_Guts_MemChain(Mock.HAL_UART_Transmit_CallInstance, cmock_guts_index);
+  Mock.HAL_UART_Transmit_IgnoreBool = (int)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
+  cmock_call_instance->ExceptionToThrow = CEXCEPTION_NONE;
+  CMockExpectParameters_HAL_UART_Transmit(cmock_call_instance, huart, pData, Size, Timeout);
+  UNITY_CLR_DETAILS();
+}
+
+void HAL_UART_Transmit_StubWithCallback(CMOCK_HAL_UART_Transmit_CALLBACK Callback)
+{
+  Mock.HAL_UART_Transmit_IgnoreBool = (int)0;
+  Mock.HAL_UART_Transmit_CallbackFunctionPointer = Callback;
+}
+
+void HAL_UART_Transmit_CMockExpectAndThrow(UNITY_LINE_TYPE cmock_line, UART_HandleTypeDef* huart, uint8_t* pData, uint16_t Size, uint32_t Timeout, CEXCEPTION_T cmock_to_throw)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_HAL_UART_Transmit_CALL_INSTANCE));
+  CMOCK_HAL_UART_Transmit_CALL_INSTANCE* cmock_call_instance = (CMOCK_HAL_UART_Transmit_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.HAL_UART_Transmit_CallInstance = CMock_Guts_MemChain(Mock.HAL_UART_Transmit_CallInstance, cmock_guts_index);
+  Mock.HAL_UART_Transmit_IgnoreBool = (int)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
+  cmock_call_instance->ExceptionToThrow = CEXCEPTION_NONE;
+  CMockExpectParameters_HAL_UART_Transmit(cmock_call_instance, huart, pData, Size, Timeout);
+  cmock_call_instance->ExceptionToThrow = cmock_to_throw;
+}
+
+void HAL_UART_Receive_IT(UART_HandleTypeDef* huart, uint8_t* pData, uint16_t Size)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_HAL_UART_Receive_IT_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_HAL_UART_Receive_IT);
+  cmock_call_instance = (CMOCK_HAL_UART_Receive_IT_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.HAL_UART_Receive_IT_CallInstance);
+  Mock.HAL_UART_Receive_IT_CallInstance = CMock_Guts_MemNext(Mock.HAL_UART_Receive_IT_CallInstance);
+  if (Mock.HAL_UART_Receive_IT_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
+  if (Mock.HAL_UART_Receive_IT_CallbackFunctionPointer != NULL)
+  {
+    Mock.HAL_UART_Receive_IT_CallbackFunctionPointer(huart, pData, Size, Mock.HAL_UART_Receive_IT_CallbackCalls++);
+    return;
+  }
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  if (cmock_call_instance->CallOrder > ++GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledEarly);
+  if (cmock_call_instance->CallOrder < GlobalVerifyOrder)
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLate);
+  {
+    UNITY_SET_DETAILS(CMockString_HAL_UART_Receive_IT,CMockString_huart);
+    UNITY_TEST_ASSERT_EQUAL_MEMORY((void*)(cmock_call_instance->Expected_huart), (void*)(huart), sizeof(UART_HandleTypeDef), cmock_line, CMockStringMismatch);
+  }
+  {
+    UNITY_SET_DETAILS(CMockString_HAL_UART_Receive_IT,CMockString_pData);
+    if (cmock_call_instance->Expected_pData == NULL)
+      { UNITY_TEST_ASSERT_NULL(pData, cmock_line, CMockStringExpNULL); }
+    else
+      { UNITY_TEST_ASSERT_EQUAL_HEX8_ARRAY(cmock_call_instance->Expected_pData, pData, 1, cmock_line, CMockStringMismatch); }
+  }
+  {
+    UNITY_SET_DETAILS(CMockString_HAL_UART_Receive_IT,CMockString_Size);
+    UNITY_TEST_ASSERT_EQUAL_HEX16(cmock_call_instance->Expected_Size, Size, cmock_line, CMockStringMismatch);
+  }
+  if (cmock_call_instance->ExceptionToThrow != CEXCEPTION_NONE)
+  {
+    UNITY_CLR_DETAILS();
+    Throw(cmock_call_instance->ExceptionToThrow);
+  }
+  UNITY_CLR_DETAILS();
+}
+
+void CMockExpectParameters_HAL_UART_Receive_IT(CMOCK_HAL_UART_Receive_IT_CALL_INSTANCE* cmock_call_instance, UART_HandleTypeDef* huart, uint8_t* pData, uint16_t Size)
+{
+  cmock_call_instance->Expected_huart = huart;
+  cmock_call_instance->Expected_pData = pData;
+  cmock_call_instance->Expected_Size = Size;
+}
+
+void HAL_UART_Receive_IT_CMockIgnore(void)
+{
+  Mock.HAL_UART_Receive_IT_IgnoreBool = (int)1;
+}
+
+void HAL_UART_Receive_IT_CMockExpect(UNITY_LINE_TYPE cmock_line, UART_HandleTypeDef* huart, uint8_t* pData, uint16_t Size)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_HAL_UART_Receive_IT_CALL_INSTANCE));
+  CMOCK_HAL_UART_Receive_IT_CALL_INSTANCE* cmock_call_instance = (CMOCK_HAL_UART_Receive_IT_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.HAL_UART_Receive_IT_CallInstance = CMock_Guts_MemChain(Mock.HAL_UART_Receive_IT_CallInstance, cmock_guts_index);
+  Mock.HAL_UART_Receive_IT_IgnoreBool = (int)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
+  cmock_call_instance->ExceptionToThrow = CEXCEPTION_NONE;
+  CMockExpectParameters_HAL_UART_Receive_IT(cmock_call_instance, huart, pData, Size);
+  UNITY_CLR_DETAILS();
+}
+
+void HAL_UART_Receive_IT_StubWithCallback(CMOCK_HAL_UART_Receive_IT_CALLBACK Callback)
+{
+  Mock.HAL_UART_Receive_IT_IgnoreBool = (int)0;
+  Mock.HAL_UART_Receive_IT_CallbackFunctionPointer = Callback;
+}
+
+void HAL_UART_Receive_IT_CMockExpectAndThrow(UNITY_LINE_TYPE cmock_line, UART_HandleTypeDef* huart, uint8_t* pData, uint16_t Size, CEXCEPTION_T cmock_to_throw)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_HAL_UART_Receive_IT_CALL_INSTANCE));
+  CMOCK_HAL_UART_Receive_IT_CALL_INSTANCE* cmock_call_instance = (CMOCK_HAL_UART_Receive_IT_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.HAL_UART_Receive_IT_CallInstance = CMock_Guts_MemChain(Mock.HAL_UART_Receive_IT_CallInstance, cmock_guts_index);
+  Mock.HAL_UART_Receive_IT_IgnoreBool = (int)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->CallOrder = ++GlobalExpectCount;
+  cmock_call_instance->ExceptionToThrow = CEXCEPTION_NONE;
+  CMockExpectParameters_HAL_UART_Receive_IT(cmock_call_instance, huart, pData, Size);
   cmock_call_instance->ExceptionToThrow = cmock_to_throw;
 }
 

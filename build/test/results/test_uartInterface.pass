@@ -1,0 +1,22 @@
+---
+:source:
+  :path: test
+  :file: test_uartInterface.c
+:successes:
+- :test: test_uartInterfaceFirstInputWithEnter
+  :line: 13
+  :message: ''
+- :test: test_interruptWithMultipleKeyWords
+  :line: 53
+  :message: ''
+- :test: test_interruptWithDoubleEnter
+  :line: 112
+  :message: ''
+:failures: []
+:ignores: []
+:counts:
+  :total: 3
+  :passed: 3
+  :failed: 0
+  :ignored: 0
+:stdout: []

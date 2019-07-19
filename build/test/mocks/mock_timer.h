@@ -30,6 +30,22 @@ typedef void (* CMOCK_UpdateCCR3_CALLBACK)(uint32_t CCR3, int cmock_num_calls);
 void UpdateCCR3_StubWithCallback(CMOCK_UpdateCCR3_CALLBACK Callback);
 #define UpdateCCR3_ExpectAndThrow(CCR3, cmock_to_throw) UpdateCCR3_CMockExpectAndThrow(__LINE__, CCR3, cmock_to_throw)
 void UpdateCCR3_CMockExpectAndThrow(UNITY_LINE_TYPE cmock_line, uint32_t CCR3, CEXCEPTION_T cmock_to_throw);
+#define HAL_UART_Transmit_Ignore() HAL_UART_Transmit_CMockIgnore()
+void HAL_UART_Transmit_CMockIgnore(void);
+#define HAL_UART_Transmit_Expect(huart, pData, Size, Timeout) HAL_UART_Transmit_CMockExpect(__LINE__, huart, pData, Size, Timeout)
+void HAL_UART_Transmit_CMockExpect(UNITY_LINE_TYPE cmock_line, UART_HandleTypeDef* huart, uint8_t* pData, uint16_t Size, uint32_t Timeout);
+typedef void (* CMOCK_HAL_UART_Transmit_CALLBACK)(UART_HandleTypeDef* huart, uint8_t* pData, uint16_t Size, uint32_t Timeout, int cmock_num_calls);
+void HAL_UART_Transmit_StubWithCallback(CMOCK_HAL_UART_Transmit_CALLBACK Callback);
+#define HAL_UART_Transmit_ExpectAndThrow(huart, pData, Size, Timeout, cmock_to_throw) HAL_UART_Transmit_CMockExpectAndThrow(__LINE__, huart, pData, Size, Timeout, cmock_to_throw)
+void HAL_UART_Transmit_CMockExpectAndThrow(UNITY_LINE_TYPE cmock_line, UART_HandleTypeDef* huart, uint8_t* pData, uint16_t Size, uint32_t Timeout, CEXCEPTION_T cmock_to_throw);
+#define HAL_UART_Receive_IT_Ignore() HAL_UART_Receive_IT_CMockIgnore()
+void HAL_UART_Receive_IT_CMockIgnore(void);
+#define HAL_UART_Receive_IT_Expect(huart, pData, Size) HAL_UART_Receive_IT_CMockExpect(__LINE__, huart, pData, Size)
+void HAL_UART_Receive_IT_CMockExpect(UNITY_LINE_TYPE cmock_line, UART_HandleTypeDef* huart, uint8_t* pData, uint16_t Size);
+typedef void (* CMOCK_HAL_UART_Receive_IT_CALLBACK)(UART_HandleTypeDef* huart, uint8_t* pData, uint16_t Size, int cmock_num_calls);
+void HAL_UART_Receive_IT_StubWithCallback(CMOCK_HAL_UART_Receive_IT_CALLBACK Callback);
+#define HAL_UART_Receive_IT_ExpectAndThrow(huart, pData, Size, cmock_to_throw) HAL_UART_Receive_IT_CMockExpectAndThrow(__LINE__, huart, pData, Size, cmock_to_throw)
+void HAL_UART_Receive_IT_CMockExpectAndThrow(UNITY_LINE_TYPE cmock_line, UART_HandleTypeDef* huart, uint8_t* pData, uint16_t Size, CEXCEPTION_T cmock_to_throw);
 
 #if defined(__GNUC__) && !defined(__ICC) && !defined(__TMS470__)
 #pragma GCC diagnostic pop
