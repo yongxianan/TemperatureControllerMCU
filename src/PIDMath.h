@@ -23,7 +23,6 @@ typedef struct{
   double kd;
   double errorAcc;
   double prevError;
-  uint32_t  firingAngle;
   uint32_t  prevTime;
 }PidInfo;
 

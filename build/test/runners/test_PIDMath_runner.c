@@ -37,8 +37,8 @@ extern void tearDown(void);
 extern void test_FindPIDValue(void);
 extern void test_FindPIDValueNegativeCurrentError(void);
 extern void test_FindPIDValueWithPIDIntegrate(void);
-extern void test_FindPIDValueWithPIDIntegrateAndAvoidPIDValueOver90(void);
-extern void test_FindPIDValueWithPIDInReset(void);
+extern void test_FindPIDValueWithPIDIntegrateAndAvoidPIDValueOver180(void);
+extern void test_FindPIDValueWithPIDInWithinRange(void);
 
 
 /*=======Test Reset Option=====*/
@@ -54,11 +54,11 @@ void resetTest(void)
 int main(void)
 {
   UnityBegin("test_PIDMath.c");
-  RUN_TEST(test_FindPIDValue, 26);
-  RUN_TEST(test_FindPIDValueNegativeCurrentError, 39);
-  RUN_TEST(test_FindPIDValueWithPIDIntegrate, 52);
-  RUN_TEST(test_FindPIDValueWithPIDIntegrateAndAvoidPIDValueOver90, 72);
-  RUN_TEST(test_FindPIDValueWithPIDInReset, 91);
+  RUN_TEST(test_FindPIDValue, 25);
+  RUN_TEST(test_FindPIDValueNegativeCurrentError, 41);
+  RUN_TEST(test_FindPIDValueWithPIDIntegrate, 58);
+  RUN_TEST(test_FindPIDValueWithPIDIntegrateAndAvoidPIDValueOver180, 84);
+  RUN_TEST(test_FindPIDValueWithPIDInWithinRange, 112);
 
   return (UnityEnd());
 }

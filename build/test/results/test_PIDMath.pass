@@ -4,19 +4,19 @@
   :file: test_PIDMath.c
 :successes:
 - :test: test_FindPIDValue
-  :line: 26
+  :line: 25
   :message: ''
 - :test: test_FindPIDValueNegativeCurrentError
-  :line: 39
+  :line: 41
   :message: ''
 - :test: test_FindPIDValueWithPIDIntegrate
-  :line: 52
+  :line: 58
   :message: ''
-- :test: test_FindPIDValueWithPIDIntegrateAndAvoidPIDValueOver90
-  :line: 72
+- :test: test_FindPIDValueWithPIDIntegrateAndAvoidPIDValueOver180
+  :line: 84
   :message: ''
-- :test: test_FindPIDValueWithPIDInReset
-  :line: 91
+- :test: test_FindPIDValueWithPIDInWithinRange
+  :line: 112
   :message: ''
 :failures: []
 :ignores: []

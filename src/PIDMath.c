@@ -6,21 +6,29 @@ int findPIDValue(PidInfo *pidInfo, double actualTemp, uint32_t currentTime){
   int pidValue = 0;
   double currentError = (pidInfo->setValue)-actualTemp;
   uint32_t  elapsedTime = currentTime-(pidInfo->prevTime);
-  //integral constant will only affect errors below 30ºC
-  if(currentError>30){
-    (pidInfo->errorAcc)=0;
-  }
+
 
   pidProprotional = (currentError)*(pidInfo->kp);
   (pidInfo->errorAcc) = ((pidInfo->ki)*currentError)+(pidInfo->errorAcc);
   pidDerivative = (currentError-(pidInfo->prevError))*(pidInfo->kd)/elapsedTime;
 
-  pidValue = (pidInfo->errorAcc)+pidProprotional+pidDerivative;
-  if(pidValue<-90){
-    pidValue=-90;
+  if((pidInfo->errorAcc)>=180){
+    (pidInfo->errorAcc)=180;
   }
-  if(pidValue>90){
-    pidValue=90;
+  else if((pidInfo->errorAcc)<=0){
+    (pidInfo->errorAcc)=0;
+  }
+
+  if(currentError<0){
+    (pidInfo->errorAcc)=90;
+  }
+
+  pidValue = (pidInfo->errorAcc)+pidProprotional+pidDerivative;
+  if(pidValue<0){
+    pidValue=0;
+  }
+  if(pidValue>180){
+    pidValue=180;
   }
   (pidInfo->prevTime) = currentTime;
   (pidInfo->prevError) = currentError;
