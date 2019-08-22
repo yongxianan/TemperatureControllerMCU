@@ -161,8 +161,8 @@ int main(void)
 	  tickValue=HAL_GetTick();
 
 	  pidValue = findPIDValue(&pidInfo,temp, tickValue);
-	  //config_pulse(&ccr3Data,180-pidValue,35);
-
+	  config_pulse(&ccr3Data,180-pidValue,35);
+/*
 
 	  config_pulse(&ccr3Data,i,40);
 	  if(resetState==false)
@@ -174,7 +174,7 @@ int main(void)
 		  resetState=true;
 	  else if(i<=0)
 		  resetState=false;
-
+*/
 
 
 
