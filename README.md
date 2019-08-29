@@ -169,3 +169,16 @@ https://youtu.be/iyvu84LFajU
 
 new testing for Kp=10, Ki=0.2, Kd=0.5. this test is more complete.
 https://youtu.be/2ljTTxVdJQo
+
+Reference:
+-----------------
+[1] 4N25, 4N26, 4N27, 4N28 from Vishay Semiconductors. (n.d.). Retrieved from https://www.vishay.com/docs/83725/4n25.pdf
+[2] Texas instruments. (n.d.). LM111, LM211, LM311 Differential Comparators. Retrieved from http://www.ti.com/lit/ds/symlink/lm211.pdf
+[3] ST. (n.d.). STM32F103xx Reference manual. Retrieved from https://www.st.com/content/ccc/resource/technical/document/reference_manual/59/b9/ba/7f/11/af/43/d5/CD00171190.pdf/files/CD00171190.pdf/jcr:content/translations/en.CD00171190.pdf
+[4] Learnabout Electronics. (n.d.). Retrieved from http://www.learnabout-electronics.org/Semiconductors/thyristors_63.php
+[5] 2N3904 datasheet. (n.d.). Retrieved from https://www.onsemi.com/pub/Collateral/2N3903-D.PDF
+[6] 2N3906 datasheet. (n.d.). Retrieved from https://www.onsemi.com/pub/Collateral/2N3906-D.PDF
+[7] BTA16 datasheet. (n.d.). Retrieved from https://my.mouser.com/datasheet/2/389/bta16-954517.pdf
+[8] BTA16-600B datasheet. (n.d.). Retrieved from http://download.maritex.com.pl/pdfs/sc/BTA16-600B.pdf
+[9] MAX6675 Cold-Junction-Compensated K-Thermocoupleto-Digital Converter (0°C to 1024°C). (n.d.). Retrieved from https://datasheets.maximintegrated.com/en/ds/MAX6675.pdf
+[10] How Does a PID Controller Work? - Structure & Tuning Methods. (2018, November 10). Retrieved from https://www.elprocus.com/the-working-of-a-pid-controller/
