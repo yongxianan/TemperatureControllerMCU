@@ -99,6 +99,13 @@ positive trigger has been trigger (first and fourth quadrant 50-100 mA) on the g
 ![negative trigger triac circuit](https://trello-attachments.s3.amazonaws.com/5cee4d3b0bae3033dfba95f5/5d5e7ad3cf99c38ba6c7ca49/ecdb6e1e8eafdeaad8879beaca901b43/image.png)
 <h6>Figure 11 : negative trigger TRIAC circuit with the lamp shown, the MCU is connect to U1 opto-coupler. this circuit being used in this project.
 
+there is testing for different firing angle for TRIAC shown in oscilloscope using code shown below:
+![](https://trello-attachments.s3.amazonaws.com/5cee4d3b0bae3033dfba95f5/5d28451c20f7bb42fb49b232/334a2ff33bb1342ce8bcccd28488cb61/image.png)
+
+a test from 0 to 150 degree firing angle and 150 to 0 degree firing angle, change (minus or add) the firing angle every 500ms using HAL_Delay.
+in the test, the (pulse width + firing angle won't exceed 165) because it may accidentally firing the next 180 degree sine wave, it only detect the rising edge from zero crossing circuit.
+video demo: https://youtu.be/LwTu69IMxX0
+
 UART communication between MUC and PC
 --------------------------------------------------------
 MCU send data to PC using HAL function:
