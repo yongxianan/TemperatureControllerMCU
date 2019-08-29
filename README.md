@@ -140,7 +140,8 @@ this function input parameter are the (actualTemp) temperature reading from ther
 
 testing the MCU with set temperature to calibrate the Ki, Kp and Kd values.
 ---------------------------------------------------------------------------------------
-method: 
+PID constant is set with this method:
+First set Kp, Ki, Kd to zero.
 Increase Kp slowly until the temperature start oscillating, it is because this oscillation show that it can provide immediate responds that is quick enough when the environment change suddenly. when Kp too low, PID have not control if the environment temperature suddenly change a lot, for example you might not want the actual temperature stay above set point for too long. (Note that it may oscillate under the setpoint which is fine because the integrate value will increase and shift the whole oscillation up to reach the set point.)
 for Ki this have to judge by experience because if the Ki value is too large, it will tune it's integrate value within large integrate value (for example -500 to 500) which will not stabilize the integrate value to certain firing angle. if too small, it can take too long to stabilize to certain firing angle. increase Kd to increase stability (reduce overshoot). 
 
