@@ -99,12 +99,24 @@ positive trigger has been trigger (first and fourth quadrant 50-100 mA) on the g
 ![negative trigger triac circuit](https://trello-attachments.s3.amazonaws.com/5cee4d3b0bae3033dfba95f5/5d5e7ad3cf99c38ba6c7ca49/ecdb6e1e8eafdeaad8879beaca901b43/image.png)
 <h6>Figure 11 : negative trigger TRIAC circuit with the lamp shown, the MCU is connect to U1 opto-coupler. this circuit being used in this project.
 
-there is testing for different firing angle for TRIAC shown in oscilloscope using code shown below:
-![](https://trello-attachments.s3.amazonaws.com/5cee4d3b0bae3033dfba95f5/5d28451c20f7bb42fb49b232/334a2ff33bb1342ce8bcccd28488cb61/image.png)
+    config_pulse(&ccr3Data,i,40);
+	  if(resetState==false)
+		  i++;
+	  else
+		  i--;
+
+	  if(i>=150)
+		  resetState=true;
+	  else if(i<=0)
+		  resetState=false;
+     
+     HAL_Delay(500);
+     
+<h6>Figure 12 : there is testing for different firing angle for TRIAC circuit using this code.
 
 a test from 0 to 150 degree firing angle and 150 to 0 degree firing angle, change (minus or add) the firing angle every 500ms using HAL_Delay.
 in the test, the (pulse width + firing angle won't exceed 165) because it may accidentally firing the next 180 degree sine wave, it only detect the rising edge from zero crossing circuit.
-video demo: https://youtu.be/LwTu69IMxX0
+testing video : https://youtu.be/LwTu69IMxX0
 
 UART communication between MUC and PC
 --------------------------------------------------------
@@ -120,7 +132,7 @@ the function will store each character into a buffer, other function only able t
 
 ![](https://trello-attachments.s3.amazonaws.com/5cee4d3b0bae3033dfba95f5/5d2846e69c76246ef5c855ee/653cd236ce6cdd6958f1953bd86e8952/sending_data_from_PC_to_MCU_(uart)_%26_tdd.png)
 
-<h6>Figure 12 : when user key in "start" and enter, it show the temperature data, it wait until user key in enter to stop it. User can set target temperature with "set temp". it will ignore other commands that are not recognize by the MCU. the time is get from HAL_GetTick function.
+<h6>Figure 13 : when user key in "start" and enter, it show the temperature data, it wait until user key in enter to stop it. User can set target temperature with "set temp". it will ignore other commands that are not recognize by the MCU. the time is get from HAL_GetTick function.
 
 read temperature from sensor
 ----------------------------------
@@ -135,7 +147,7 @@ this function use full duplex mode to receive data from MAX 6675 (with K-type th
 to decode the 16 bit data from MAX6675.
 
 ![display get time and temp](https://trello-attachments.s3.amazonaws.com/5cee4d3b0bae3033dfba95f5/5d26ba9d084d9846ffd95d3e/4f6c1e98b7b58eee85353c2dc075363b/uart_communication_(receive_from_MCU)_and_test_getTemp_and_getTime.png)
-<h6>Figure 13 : testing for the getTemp function.
+<h6>Figure 14 : testing for the getTemp function.
 
 PID function
 -------------------------
