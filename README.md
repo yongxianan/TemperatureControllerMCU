@@ -99,6 +99,7 @@ positive trigger has been trigger (first and fourth quadrant 50-100 mA) on the g
 ![negative trigger triac circuit](https://trello-attachments.s3.amazonaws.com/5cee4d3b0bae3033dfba95f5/5d5e7ad3cf99c38ba6c7ca49/ecdb6e1e8eafdeaad8879beaca901b43/image.png)
 <h6>Figure 11 : negative trigger TRIAC circuit with the lamp shown, the MCU is connect to U1 opto-coupler. this circuit being used in this project.
 
+
     config_pulse(&ccr3Data,i,40);
 	  if(resetState==false)
 		  i++;
@@ -111,7 +112,6 @@ positive trigger has been trigger (first and fourth quadrant 50-100 mA) on the g
 		  resetState=false;
      
      HAL_Delay(500);
-     
 <h6>Figure 12 : there is testing for different firing angle for TRIAC circuit using this code.
 
 a test from 0 to 150 degree firing angle and 150 to 0 degree firing angle, change (minus or add) the firing angle every 500ms using HAL_Delay.
@@ -131,7 +131,6 @@ MCU receive data from PC using interrupt, this function will be called by interr
 the function will store each character into a buffer, other function only able to read this buffer if this interrupt function receive a "enter" from user. it also send back each character to PC when user is typing to the console for UART, so that the console feedback to user whether user got key in characters correctly.
 
 ![](https://trello-attachments.s3.amazonaws.com/5cee4d3b0bae3033dfba95f5/5d2846e69c76246ef5c855ee/653cd236ce6cdd6958f1953bd86e8952/sending_data_from_PC_to_MCU_(uart)_%26_tdd.png)
-
 <h6>Figure 13 : when user key in "start" and enter, it show the temperature data, it wait until user key in enter to stop it. User can set target temperature with "set temp". it will ignore other commands that are not recognize by the MCU. the time is get from HAL_GetTick function.
 
 read temperature from sensor
